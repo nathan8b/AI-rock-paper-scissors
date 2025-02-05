@@ -32,14 +32,32 @@ function playRound(humanChoice, computerChoice) {
         (humanChoice === "scissors" && computerChoice === "paper")) {
         console.log("You won this round!");
         humanScore++;
+        console.log("Score: " + humanScore + " - " + computerScore);   
     }
     else {
         console.log("Computer won this round!");
         computerScore++;
+        console.log("Score: " + humanScore + " - " + computerScore);
+    }
+
+}
+
+function playGame() {
+    console.log("Welcome to Rock Paper Scissors! You'll be playing 5 rounds against the computer.");
+    for(let i = 1; i <= 5; i++){
+        console.log("Round " + i + "!");
+        let humanSelection = getHumanChoice();
+        let computerSelection = getComputerChoice();
+
+        playRound(humanSelection, computerSelection);
+    }
+
+    if(humanScore > computerScore){
+        console.log("You Win!");
+    }
+    else {
+        console.log("Computer Wins!");
     }
 }
 
-const humanSelection = getHumanChoice();
-const computerSelection = getComputerChoice();
-
-playRound(humanSelection, computerSelection);
+playGame();
