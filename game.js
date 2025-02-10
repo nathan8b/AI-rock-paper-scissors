@@ -39,13 +39,11 @@ function playRound(humanChoice, computerChoice) {
         (humanChoice === "paper" && computerChoice === "rock") || 
         (humanChoice === "scissors" && computerChoice === "paper")) {
         humanScore++;
-        console.log("hum" + humanScore);
         result.textContent = "You won this round!";
     }
     // if computer wins
     else {
         computerScore++;
-        console.log("comp" + computerScore);
 
         result.textContent = "You lost this round!";
     }
@@ -61,7 +59,7 @@ function playRound(humanChoice, computerChoice) {
 function playGame(){
     humanScore = 0;
     computerScore = 0;
-    console.log(humanScore + " - " + computerScore);
+    isPlaying = true;
     //reset text for new round
     moves.textContent = "";
     result.textContent = "Pick your option!";
@@ -70,19 +68,6 @@ function playGame(){
     moves.style.visibility = "visible";
     result.style.visibility = "visible";
     score.style.visibility = "visible";
-    
-    // start next round by clicking an option
-    buttons.forEach(button => {
-        button.addEventListener("click", () => {
-            if(humanScore < 5 && computerScore < 5) {
-                playRound(button.className, getComputerChoice());
-            }
-            else {
-                endGame();
-            }
-        })
-    })
-    return;
 }
 
 function printMoves(humanChoice, computerChoice){
@@ -101,6 +86,8 @@ function printMoves(humanChoice, computerChoice){
 }
 
 function endGame(){
+    // stop game
+    isPlaying = false;
     // hide moves
     moves.style.visibility = "hidden";
     // determine winner, and change results text
@@ -138,6 +125,16 @@ score.style.visibility = "hidden";
 // initialize scores
 let humanScore = 0;
 let computerScore = 0;
+let isPlaying = false;
+
+//event listener for choice buttons
+buttons.forEach(button => {
+    button.addEventListener("click", () => {
+        if(isPlaying && humanScore < 5 && computerScore < 5) {
+            playRound(button.className, getComputerChoice());
+        }
+    })
+})
 
 // start game when play button clicked
 playBtn.addEventListener("click", () => {
