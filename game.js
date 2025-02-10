@@ -27,8 +27,7 @@ function getHumanChoice() {
 
 function playRound(humanChoice, computerChoice) {
     // print out players moves
-    moves.textContent = humanChoice + " vs " + computerChoice;
-    console.log("Your choice: " + humanChoice + "   Computer choice: " + computerChoice);
+    printMoves(humanChoice, computerChoice);
     // if round is a tie
     if(humanChoice === computerChoice){
         result.textContent = "Tie! Replay this round!"
@@ -40,26 +39,37 @@ function playRound(humanChoice, computerChoice) {
         (humanChoice === "paper" && computerChoice === "rock") || 
         (humanChoice === "scissors" && computerChoice === "paper")) {
         humanScore++;
+        console.log("hum" + humanScore);
         result.textContent = "You won this round!";
     }
     // if computer wins
     else {
         computerScore++;
+        console.log("comp" + computerScore);
+
         result.textContent = "You lost this round!";
     }
     // print out score
     score.textContent = "Score: " + humanScore + " - " + computerScore;
+    //check if game over
+    if(humanScore === 5 || computerScore === 5){
+        endGame();
+    }
 }
 
 //plays game until player or computer reaches 5 points
 function playGame(){
     humanScore = 0;
     computerScore = 0;
-
+    console.log(humanScore + " - " + computerScore);
+    //reset text for new round
+    moves.textContent = "";
+    result.textContent = "Pick your option!";
+    score.textContent = "Score: 0 - 0";
+    //make text visible
     moves.style.visibility = "visible";
     result.style.visibility = "visible";
     score.style.visibility = "visible";
-    
     
     // start next round by clicking an option
     buttons.forEach(button => {
@@ -72,14 +82,35 @@ function playGame(){
             }
         })
     })
+    return;
+}
+
+function printMoves(humanChoice, computerChoice){
+    let human = "";
+    let computer = "";
+    // find corresponding emoji to humanChoice
+    if(humanChoice === "rock") human = "🪨";
+    else if(humanChoice === "paper") human = "📃";
+    else if(humanChoice === "scissors") human = "✂️";
+    // find corresponding emoji to computerChoice
+    if(computerChoice === "rock") computer = "🪨";
+    else if(computerChoice === "paper") computer = "📃";
+    else if(computerChoice === "scissors") computer = "✂️";
+    //update moves text
+    moves.textContent = human + " - " + computer;
 }
 
 function endGame(){
+    // hide moves
+    moves.style.visibility = "hidden";
+    // determine winner, and change results text
     if (humanScore > computerScore) {
-        console.log("🎉 You Win the Game!");
+        result.textContent = "🎉 You win!"
     } else {
-        console.log("💻 Computer Wins the Game!");
+        result.textContent = "💻 Computer Wins!";
     }
+    playBtn.textContent = "Play Again!";
+    playBtn.style.visibility = "visible";
 }
 
 // grab play button
@@ -110,6 +141,6 @@ let computerScore = 0;
 
 // start game when play button clicked
 playBtn.addEventListener("click", () => {
-    playBtn.remove();
+    playBtn.style.visibility = "hidden";
     playGame();
 });
