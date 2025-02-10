@@ -56,8 +56,10 @@ function playGame(){
     humanScore = 0;
     computerScore = 0;
 
-    results.appendChild(moves);
-    results.appendChild(score);
+    moves.style.visibility = "visible";
+    result.style.visibility = "visible";
+    score.style.visibility = "visible";
+    
     
     // start next round by clicking an option
     buttons.forEach(button => {
@@ -91,19 +93,22 @@ const buttons = buttonsBox.querySelectorAll("button"); // grab all buttons to a 
 const results = document.querySelector("#results"); // grab result box
 
 // get player moves display
-const moves = document.querySelector(".moves")
+const moves = document.querySelector(".moves");
+moves.style.visibility = "hidden";
 
 // get result display
 const result = document.querySelector(".result");
+result.style.visibility = "hidden";
 
 // get score counter
 const score = document.querySelector(".score");
+score.style.visibility = "hidden";
 
-
-
+// initialize scores
 let humanScore = 0;
 let computerScore = 0;
 
+// start game when play button clicked
 playBtn.addEventListener("click", () => {
     playBtn.remove();
     playGame();

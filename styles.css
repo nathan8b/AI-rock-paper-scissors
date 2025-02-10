@@ -1,0 +1,55 @@
+body {
+    background-color: rgb(33, 33, 33);
+    color: white;
+    margin: 0;
+    height: 100%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+h1 {
+    font-size: 20px;
+}
+
+h2 {
+    font-size: 15px;
+}
+
+.game-box {
+    background-color: rgb(56, 56, 56);
+    height: 60vh;
+    max-width: 800px;
+    margin: 10px 20px;
+    padding: 25px;
+    border-radius: 30px;
+    box-shadow: 10px 10px 10px rgb(11, 11, 11);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#buttons-box {
+    display: flex;
+    justify-content: space-between;
+    gap: 2vw;
+}
+
+#buttons-box button {
+    background-color: rgb(34, 34, 34);
+    border-radius: 30px;
+    height: 25vw;
+    width: 25vw;
+    max-width: 150px;
+    max-height: 150px;
+    padding: 0px 0px 5px 0px;
+    font-size: clamp(10px, 15vw, 70px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
