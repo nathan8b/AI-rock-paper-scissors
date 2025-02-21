@@ -1,3 +1,45 @@
+// grab play button
+const playBtn = document.querySelector(".play-btn");
+
+// buttons div
+const buttonsBox = document.getElementById("buttons-box"); // grab parent div for buttons
+const buttons = buttonsBox.querySelectorAll("button"); // grab all buttons to a NodeList
+
+//results div
+const results = document.querySelector("#results"); // grab result box
+
+// get player moves display
+const moves = document.querySelector(".moves");
+moves.style.visibility = "hidden";
+
+// get result display
+const result = document.querySelector(".result");
+result.style.visibility = "hidden";
+
+// get score counter
+const score = document.querySelector(".score");
+score.style.visibility = "hidden";
+
+//event listener for choice buttons
+buttons.forEach(button => {
+    button.addEventListener("click", () => {
+        if(isPlaying && humanScore < 5 && computerScore < 5) {
+            playRound(button.className, getComputerChoice());
+        }
+    })
+})
+
+// start game when play button clicked
+playBtn.addEventListener("click", () => {
+    playBtn.style.visibility = "hidden";
+    playGame();
+});
+
+// initialize scores
+let humanScore = 0;
+let computerScore = 0;
+let isPlaying = false;
+
 function getComputerChoice() {
     let num = Math.floor(Math.random() * 3) + 1;
 
@@ -99,45 +141,3 @@ function endGame(){
     playBtn.textContent = "Play Again!";
     playBtn.style.visibility = "visible";
 }
-
-// grab play button
-const playBtn = document.querySelector(".play-btn");
-
-// buttons div
-const buttonsBox = document.getElementById("buttons-box"); // grab parent div for buttons
-const buttons = buttonsBox.querySelectorAll("button"); // grab all buttons to a NodeList
-
-//results div
-const results = document.querySelector("#results"); // grab result box
-
-// get player moves display
-const moves = document.querySelector(".moves");
-moves.style.visibility = "hidden";
-
-// get result display
-const result = document.querySelector(".result");
-result.style.visibility = "hidden";
-
-// get score counter
-const score = document.querySelector(".score");
-score.style.visibility = "hidden";
-
-// initialize scores
-let humanScore = 0;
-let computerScore = 0;
-let isPlaying = false;
-
-//event listener for choice buttons
-buttons.forEach(button => {
-    button.addEventListener("click", () => {
-        if(isPlaying && humanScore < 5 && computerScore < 5) {
-            playRound(button.className, getComputerChoice());
-        }
-    })
-})
-
-// start game when play button clicked
-playBtn.addEventListener("click", () => {
-    playBtn.style.visibility = "hidden";
-    playGame();
-});
