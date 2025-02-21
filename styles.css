@@ -75,6 +75,7 @@ h2 {
 }
 
 .moves {
+    margin: 0;
     height: 30vh;
     display: flex;
     justify-content: center;
