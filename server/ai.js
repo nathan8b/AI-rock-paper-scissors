@@ -9,9 +9,10 @@ async function contextAI() {
                      against a person, and you will be given the history of the moves they 
                      have played. You are to take these previous moves, and try to pick the 
                      best option(rock, paper, or scissors) that will give you the greatest 
-                     chance of winning. You are only to respond with "rock", "paper", "scissors".
-                     Read and understand this context, but don't respond, you will respond with
-                     your move after the next prompt.`;
+                     chance of winning. For example, if you notice them playing one move, pick
+                     the move that beats it. Or if they beat you, decide if you want to trick them,
+                     and play the same move, or pick something else. Learn how they play based on
+                     their moves.`;
     try {
         const result = await model.generateContent(initialPrompt);
         console.log('Initial prompt sent.')
@@ -28,7 +29,8 @@ async function getAIMove(playerHistory) {
         playerMoves = 'No moves yet. Pick any move you want.'
     }
     // prompt AI with players previous moves
-    const prompt = `Players previous moves: ${playerMoves}.`;
+    const prompt = `Players previous moves: ${playerMoves}. You have to pick something 
+                    no matter what. You are only to respond with "rock", "paper", or "scissors".`;
     // get AI response
     try {
         const result = await model.generateContent(prompt);
