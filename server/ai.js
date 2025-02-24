@@ -33,7 +33,7 @@ async function getAIMove(playerHistory, aiHistory) {
     const prompt = `In the last rounds:
                     Player played: ${playerMoves}
                     You played: ${aiMoves}
-                    Try to predict the players next move.
+                    Try to predict the players next move, don't just pick the move that beats their previous move.
                     Pick your move, remember, rock beats scissors, paper beats rock, scissors beats paper.
                     Only respond with "rock", "paper", or "scissors", never ever try to explain your reasoning`;
     // get AI response

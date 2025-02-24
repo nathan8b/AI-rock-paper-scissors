@@ -91,6 +91,13 @@ async function playRound(humanChoice) {
     if(humanChoice === computerChoice){
         result.textContent = "Tie! Replay this round!"
         score.textContent = "Score: " + humanScore + " - " + computerScore;
+        // add ai and player move to history arrays, checking if they're too long first
+        if(playerHistory.length > 5){
+            playerHistory.shift(); // remove oldest move
+            aiHistory.shift(); // remove oldest move
+        }
+        playerHistory.push(humanChoice);
+        aiHistory.push(computerChoice);
         return;
     }
     // if human wins
@@ -119,10 +126,11 @@ async function playRound(humanChoice) {
     }
     playerHistory.push(humanChoice);
     aiHistory.push(computerChoice);
+
     // call getAIReason function to get AI's reasoning, then put into text box
     const aiAnswer = await getAIReason(playerHistory, aiHistory); // get ai response
 
-    let text = document.createElement("p"); // create text node
+    let text = document.createElement("p"); // create p element
     text.textContent = `AI: ${aiAnswer}`; // change text
     text.style.display = "block"; // display as block
     
