@@ -24,7 +24,8 @@ async function getAIMove(playerHistory, aiHistory) {
                     if they may be trying to trick you after picking only one move.
                     You should try to trick them too, trying to win no matter what.
                     You have to pick something no matter what. Look back at previous rounds
-                    to pick your move. You are only to respond with "rock", "paper", or "scissors".`;
+                    to pick your move. Rock beats scissors, paper beats rock, scissors
+                    beats paper. You are only to respond with "rock", "paper", or "scissors".`;
     // get AI response
     try {
         const result = await model.generateContent(prompt);
@@ -44,6 +45,25 @@ async function getAIMove(playerHistory, aiHistory) {
     }
 }
 
+async function getAIReason(playerHistory, aiHistory) {
+    // prompt for AI's reason
+    const prompt = `Last round, player picked ${playerHistory}, you picked ${aiHistory}. Decide
+                    who won based off these moves using these rules: Rock beats scissors, paper beats rock, scissors
+                    beats paper.
+                    Give a short, sentence long, exclamation based off if you won the round or lost it, explaining why you 
+                    won or lost. Vary your response each time, don't just say "I won" or "I lost".
+                    If the player move beat yours, never say that you won, say that you lost, and why.`
+    // get AI response
+    try {
+        const result = await model.generateContent(prompt);
+        // get text from AI
+        const aiReason = result.response.text();
+        return aiReason;
+    } catch (error) {
+        console.error("Error generating AI response:", error);
+    }
+}
+
 contextAI();
 
-module.exports = { getAIMove };
+module.exports = { getAIMove, getAIReason };

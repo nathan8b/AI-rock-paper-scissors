@@ -1,7 +1,7 @@
 require("dotenv").config(); // load environment variables
 const cors = require("cors"); // import cors
 const path = require('path');
-const { getAIMove } = require("./ai.js"); // import AI function
+const { getAIMove, getAIReason } = require("./ai.js"); // import AI functions
 
 const express = require("express");
 const app = express();
@@ -24,6 +24,18 @@ app.post('/get-ai-move', async (req, res) => {
     console.log("AI move:", aiMove);  // debugging
     res.json({ aiMove });  // send the AI's move as a response
 });
+
+// API endpoint to get AI reason
+app.post('/get-ai-reason', async (req, res) => {
+    const playerHistory = req.body.playerHistory;
+    const aiHistory = req.body.aiHistory;
+
+    const aiReason = await getAIReason(playerHistory, aiHistory); // call the function
+    console.log("player move:", playerHistory);
+    console.log("AI move:", aiHistory);
+    console.log("AI response:", aiReason); // debugging
+    res.json({ aiReason }); // send AI reason as response
+})
 
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);

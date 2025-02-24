@@ -57,19 +57,31 @@ async function getAIMove(playerHistory, aiHistory) {
         headers: {
             'Content-Type': 'application/json',  // the request body is JSON
         },
-        body: JSON.stringify({ playerHistory, aiHistory })  // send player history to the backend
+        body: JSON.stringify({ playerHistory, aiHistory }),  // send player history to the backend
     });
 
     const data = await response.json();  // parse the response
     return data.aiMove;  // return the AI move
 }
 
+// fetch the getAIReason from backend
+async function getAIReason(playerHistory, aiHistory) {
+    // POST request to backend to get AI reason
+    const response = await fetch('/get-ai-reason', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ playerHistory, aiHistory }), // send player and ai move to backend
+    });
+
+    const data = await response.json(); // parse the response
+    return data.aiReason; // return ai reason
+}
+
 async function playRound(humanChoice) {
     // get AI move
     let computerChoice = await getAIMove(playerHistory, aiHistory);
-    // add player move to playerHistory after AI picks its move
-    playerHistory = humanChoice;
-    aiHistory = computerChoice;
     // print out players moves
     printMoves(humanChoice, computerChoice);
     // if round is a tie
@@ -97,6 +109,11 @@ async function playRound(humanChoice) {
     if(humanScore === 5 || computerScore === 5){
         endGame();
     }
+    // add player move to playerHistory after AI picks its move
+    playerHistory = humanChoice;
+    aiHistory = computerChoice;
+    // call getAIReason function to get AI's reasoning
+    getAIReason(playerHistory, aiHistory);
 }
 
 //plays game until player or computer reaches 5 points
