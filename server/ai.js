@@ -1,12 +1,15 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const model = genAI.getGenerativeModel({ model: "models/gemini-2.0-flash" });
 
 // give context of game to ai
 async function contextAI() {
     let initialPrompt = `You are an AI playing the game rock paper scissors. You will be playing 
-                     against a person, and given the moves from the last round.`;
+                     against a person, and given the previous moves. Based on the previous
+                     moves, you are to do whatever you can to pick the winning move for the next
+                     round. Trick the player, recognize patterns, assume the player is also
+                     trying to trick you.`;
     try {
         const result = await model.generateContent(initialPrompt);
         console.log('Initial prompt sent.')
@@ -16,16 +19,23 @@ async function contextAI() {
 }
  
 async function getAIMove(playerHistory, aiHistory) {
+    let playerMoves = '';
+    let aiMoves = '';
+    // convert arrays to strings, checking if empty
+    if(playerHistory.length === 0){
+        playerMoves = 'no previous moves, you are to pick random move.'
+    }
+    else {
+        playerMoves = playerHistory.join(', ');
+        aiMoves = aiHistory.join(', ');
+    }
     // prompt AI with players previous moves
-    const prompt = `In the last round:
-                    Player played: ${playerHistory}
-                    You played: ${aiHistory}
-                    You are to play as intelligently as possible, looking for patterns or
-                    if they may be trying to trick you after picking only one move.
-                    You should try to trick them too, trying to win no matter what.
-                    You have to pick something no matter what. Look back at previous rounds
-                    to pick your move. Rock beats scissors, paper beats rock, scissors
-                    beats paper. You are only to respond with "rock", "paper", or "scissors".`;
+    const prompt = `In the last rounds:
+                    Player played: ${playerMoves}
+                    You played: ${aiMoves}
+                    Try to predict the players next move.
+                    Pick your move, remember, rock beats scissors, paper beats rock, scissors beats paper.
+                    Only respond with "rock", "paper", or "scissors", never ever try to explain your reasoning`;
     // get AI response
     try {
         const result = await model.generateContent(prompt);
@@ -46,13 +56,16 @@ async function getAIMove(playerHistory, aiHistory) {
 }
 
 async function getAIReason(playerHistory, aiHistory) {
+    const playerMove = playerHistory[playerHistory.length - 1];
+    const aiMove = aiHistory[aiHistory.length - 1];
+    console.log('player:', playerMove);
+    console.log('ai:', aiMove);
     // prompt for AI's reason
-    const prompt = `Last round, player picked ${playerHistory}, you picked ${aiHistory}. Decide
-                    who won based off these moves using these rules: Rock beats scissors, paper beats rock, scissors
-                    beats paper.
-                    Give a short, sentence long, exclamation based off if you won the round or lost it, explaining why you 
-                    won or lost. Vary your response each time, don't just say "I won" or "I lost".
-                    If the player move beat yours, never say that you won, say that you lost, and why.`
+    const prompt = `You are playing rock paper scissors. You picked ${aiMove}, and your
+                    opponent picked ${playerMove}. Based on the rules, determine
+                    who won, and give a short exclamation based on who won the round.
+                    If you lost, sound disappointed, if you won, sound excited and lightly trash talk.
+                    Do not give your reasoning, just your exclamation.`;
     // get AI response
     try {
         const result = await model.generateContent(prompt);

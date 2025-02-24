@@ -1,6 +1,6 @@
 // make array for player history
-let playerHistory = 'first round, no previous move';
-let aiHistory = 'first round, no previous move';
+let playerHistory = [];
+let aiHistory = [];
 
 // grab play button
 const playBtn = document.querySelector(".play-btn");
@@ -57,7 +57,7 @@ async function getAIMove(playerHistory, aiHistory) {
         headers: {
             'Content-Type': 'application/json',  // the request body is JSON
         },
-        body: JSON.stringify({ playerHistory, aiHistory }),  // send player history to the backend
+        body: JSON.stringify({ playerHistory, aiHistory }),  // send player and ai history to the backend
     });
 
     const data = await response.json();  // parse the response
@@ -72,7 +72,7 @@ async function getAIReason(playerHistory, aiHistory) {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ playerHistory, aiHistory }), // send player and ai move to backend
+        body: JSON.stringify({ playerHistory, aiHistory }), // send player and ai history to backend
     });
 
     const data = await response.json(); // parse the response
@@ -109,9 +109,13 @@ async function playRound(humanChoice) {
     if(humanScore === 5 || computerScore === 5){
         endGame();
     }
-    // add player move to playerHistory after AI picks its move
-    playerHistory = humanChoice;
-    aiHistory = computerChoice;
+    // add ai and player move to history arrays, checking if they're too long first
+    if(playerHistory.length > 5){
+        playerHistory.shift(); // remove oldest move
+        aiHistory.shift(); // remove oldest move
+    }
+    playerHistory.push(humanChoice);
+    aiHistory.push(computerChoice);
     // call getAIReason function to get AI's reasoning
     getAIReason(playerHistory, aiHistory);
 }

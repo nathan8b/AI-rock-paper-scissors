@@ -31,8 +31,6 @@ app.post('/get-ai-reason', async (req, res) => {
     const aiHistory = req.body.aiHistory;
 
     const aiReason = await getAIReason(playerHistory, aiHistory); // call the function
-    console.log("player move:", playerHistory);
-    console.log("AI move:", aiHistory);
     console.log("AI response:", aiReason); // debugging
     res.json({ aiReason }); // send AI reason as response
 })
