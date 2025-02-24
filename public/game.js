@@ -1,21 +1,17 @@
-// connect frontend
-import { getAIMove } from "./api.js";
+// make array for player history
+let playerHistory = [];
 
 // grab play button
 const playBtn = document.querySelector(".play-btn");
-
 // buttons div
 const buttonsBox = document.getElementById("buttons-box"); // grab parent div for buttons
 const buttons = buttonsBox.querySelectorAll("button"); // grab all buttons to a NodeList
-
 // get player moves display
 const moves = document.querySelector(".moves");
 moves.style.visibility = "hidden";
-
 // get result display
 const result = document.querySelector(".result");
 result.style.visibility = "hidden";
-
 // get score counter
 const score = document.querySelector(".score");
 score.style.visibility = "hidden";
@@ -46,45 +42,59 @@ function getHumanChoice() {
     buttons.forEach((button) => {
         // for each, add an event listener
         button.addEventListener("click", () => {
-            console.log(button.className.toString());
             choice = button.className.toString();
         })
     })
     return choice;
 }
 
-function playRound(humanChoice) {
-    // call api to get AI move
-    getAIMove().then(computerChoice => {
-        // print out players moves
-        printMoves(humanChoice, computerChoice);
-        // if round is a tie
-        if(humanChoice === computerChoice){
-            result.textContent = "Tie! Replay this round!"
-            score.textContent = "Score: " + humanScore + " - " + computerScore;
-            return;
-        }
-        // if human wins
-        else if((humanChoice === "rock" && computerChoice === "scissors") || 
-            (humanChoice === "paper" && computerChoice === "rock") || 
-            (humanChoice === "scissors" && computerChoice === "paper")) {
-            humanScore++;
-            result.textContent = "You won this round!";
-        }
-        // if computer wins
-        else {
-            computerScore++;
-
-            result.textContent = "You lost this round!";
-        }
-        // print out score
-        score.textContent = "Score: " + humanScore + " - " + computerScore;
-        //check if game over
-        if(humanScore === 5 || computerScore === 5){
-            endGame();
-        }
+// fetch the getAIMove from backend
+async function getAIMove(playerHistory) {
+    // POST request to backend to get AI move
+    const response = await fetch('/get-ai-move', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',  // the request body is JSON
+        },
+        body: JSON.stringify({ playerHistory })  // send player history to the backend
     });
-    
+
+    const data = await response.json();  // parse the response
+    return data.aiMove;  // return the AI move
+}
+
+async function playRound(humanChoice) {
+    // get AI move
+    const computerChoice = await getAIMove(playerHistory);
+    // add player move to playerHistory after AI picks its move
+    playerHistory.push(humanChoice);
+    // print out players moves
+    printMoves(humanChoice, computerChoice);
+    // if round is a tie
+    if(humanChoice === computerChoice){
+        result.textContent = "Tie! Replay this round!"
+        score.textContent = "Score: " + humanScore + " - " + computerScore;
+        return;
+    }
+    // if human wins
+    else if((humanChoice === "rock" && computerChoice === "scissors") || 
+        (humanChoice === "paper" && computerChoice === "rock") || 
+        (humanChoice === "scissors" && computerChoice === "paper")) {
+        humanScore++;
+        result.textContent = "You won this round!";
+    }
+    // if computer wins
+    else {
+        computerScore++;
+
+        result.textContent = "You lost this round!";
+    }
+    // print out score
+    score.textContent = "Score: " + humanScore + " - " + computerScore;
+    //check if game over
+    if(humanScore === 5 || computerScore === 5){
+        endGame();
+    }
 }
 
 //plays game until player or computer reaches 5 points
