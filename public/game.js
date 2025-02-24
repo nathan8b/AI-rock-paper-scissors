@@ -1,5 +1,6 @@
 // make array for player history
-let playerHistory = [];
+let playerHistory = 'first round, no previous move';
+let aiHistory = 'first round, no previous move';
 
 // grab play button
 const playBtn = document.querySelector(".play-btn");
@@ -49,14 +50,14 @@ function getHumanChoice() {
 }
 
 // fetch the getAIMove from backend
-async function getAIMove(playerHistory) {
+async function getAIMove(playerHistory, aiHistory) {
     // POST request to backend to get AI move
     const response = await fetch('/get-ai-move', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',  // the request body is JSON
         },
-        body: JSON.stringify({ playerHistory })  // send player history to the backend
+        body: JSON.stringify({ playerHistory, aiHistory })  // send player history to the backend
     });
 
     const data = await response.json();  // parse the response
@@ -65,9 +66,10 @@ async function getAIMove(playerHistory) {
 
 async function playRound(humanChoice) {
     // get AI move
-    const computerChoice = await getAIMove(playerHistory);
+    let computerChoice = await getAIMove(playerHistory, aiHistory);
     // add player move to playerHistory after AI picks its move
-    playerHistory.push(humanChoice);
+    playerHistory = humanChoice;
+    aiHistory = computerChoice;
     // print out players moves
     printMoves(humanChoice, computerChoice);
     // if round is a tie
@@ -134,9 +136,9 @@ function endGame(){
     moves.style.visibility = "hidden";
     // determine winner, and change results text
     if (humanScore > computerScore) {
-        result.textContent = "🎉 You win!"
+        result.textContent = "🎉 You win! 🎉";
     } else {
-        result.textContent = "💻 Computer Wins!";
+        result.textContent = "🤖 AI Wins! 💻" ;
     }
     playBtn.textContent = "Play Again!";
     playBtn.style.visibility = "visible";

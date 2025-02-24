@@ -6,13 +6,7 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 // give context of game to ai
 async function contextAI() {
     let initialPrompt = `You are an AI playing the game rock paper scissors. You will be playing 
-                     against a person, and you will be given the history of the moves they 
-                     have played. You are to take these previous moves, and try to pick the 
-                     best option(rock, paper, or scissors) that will give you the greatest 
-                     chance of winning. For example, if you notice them playing one move, pick
-                     the move that beats it. Or if they beat you, decide if you want to trick them,
-                     and play the same move, or pick something else. Learn how they play based on
-                     their moves.`;
+                     against a person, and given the moves from the last round.`;
     try {
         const result = await model.generateContent(initialPrompt);
         console.log('Initial prompt sent.')
@@ -21,16 +15,16 @@ async function contextAI() {
     }
 }
  
-async function getAIMove(playerHistory) {
-    // convert history array into string for the prompt
-    let playerMoves = playerHistory.join(', ');
-    // if array empty (game just started), change playerMoves to let gemini know
-    if(playerMoves.length === 0){
-        playerMoves = 'No moves yet. Pick any move you want.'
-    }
+async function getAIMove(playerHistory, aiHistory) {
     // prompt AI with players previous moves
-    const prompt = `Players previous moves: ${playerMoves}. You have to pick something 
-                    no matter what. You are only to respond with "rock", "paper", or "scissors".`;
+    const prompt = `In the last round:
+                    Player played: ${playerHistory}
+                    You played: ${aiHistory}
+                    You are to play as intelligently as possible, looking for patterns or
+                    if they may be trying to trick you after picking only one move.
+                    You should try to trick them too, trying to win no matter what.
+                    You have to pick something no matter what. Look back at previous rounds
+                    to pick your move. You are only to respond with "rock", "paper", or "scissors".`;
     // get AI response
     try {
         const result = await model.generateContent(prompt);

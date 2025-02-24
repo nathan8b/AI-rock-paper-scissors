@@ -1,31 +1,28 @@
-require("dotenv").config(); // Load environment variables
+require("dotenv").config(); // load environment variables
 const cors = require("cors"); // import cors
 const path = require('path');
 const { getAIMove } = require("./ai.js"); // import AI function
 
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 3000; // Set port from .env or default to 3000
+const port = process.env.PORT || 3000; // set port from .env or default to 3000
 
-app.use(cors()); // Enable CORS for frontend access
-app.use(express.json()); // Middleware to parse JSON
+app.use(cors()); // enable CORS for frontend access
+app.use(express.json()); // middleware to parse JSON
 
-// Serve static files (HTML, CSS, JS, etc.) from the 'public' directory
+// serve frontend files in public directory
 app.use(express.static(path.join(__dirname, '../public')));
 
 // API endpoint to get AI move
 app.post('/get-ai-move', async (req, res) => {
     const playerHistory = req.body.playerHistory;
-    console.log("Received player history:", playerHistory);  // Debugging log
+    const aiHistory = req.body.aiHistory;
+    console.log("Received player history:", playerHistory);  // debugging
+    console.log('Received AI history:', aiHistory); //debugging
 
-    if (Array.isArray(playerHistory)) {
-        const aiMove = await getAIMove(playerHistory);  // Call the AI function
-        console.log("AI move:", aiMove);  // Debugging log
-        res.json({ aiMove });  // Send the AI's move as a response
-    } else {
-        console.log("Error: playerHistory is not an array.");
-        res.status(400).json({ error: "playerHistory should be an array" });
-    }
+    const aiMove = await getAIMove(playerHistory, aiHistory);  // call the function
+    console.log("AI move:", aiMove);  // debugging
+    res.json({ aiMove });  // send the AI's move as a response
 });
 
 app.listen(port, () => {
