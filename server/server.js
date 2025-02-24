@@ -11,7 +11,7 @@ app.use(cors()); // enable CORS for frontend access
 app.use(express.json()); // middleware to parse JSON
 
 // serve frontend files in public directory
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, '..')));
 
 // API endpoint to get AI move
 app.post('/get-ai-move', async (req, res) => {
