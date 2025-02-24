@@ -64,7 +64,8 @@ async function getAIReason(playerHistory, aiHistory) {
     const prompt = `You are playing rock paper scissors. You picked ${aiMove}, and your
                     opponent picked ${playerMove}. Based on the rules, determine
                     who won, and give a short exclamation based on who won the round.
-                    If you lost, sound disappointed, if you won, sound excited and lightly trash talk.
+                    If you lost, be disappointed. If you won, be excited. Trash talk either way.
+                    Refer to the other player as 'you'.
                     Do not give your reasoning, just your exclamation.`;
     // get AI response
     try {

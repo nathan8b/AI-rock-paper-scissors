@@ -6,16 +6,19 @@ let aiHistory = [];
 const playBtn = document.querySelector(".play-btn");
 // buttons div
 const buttonsBox = document.getElementById("buttons-box"); // grab parent div for buttons
+buttonsBox.style.visibility = "hidden";
 const buttons = buttonsBox.querySelectorAll("button"); // grab all buttons to a NodeList
 // get player moves display
 const moves = document.querySelector(".moves");
 moves.style.visibility = "hidden";
 // get result display
 const result = document.querySelector(".result");
-result.style.visibility = "hidden";
 // get score counter
 const score = document.querySelector(".score");
 score.style.visibility = "hidden";
+// get ai text output box
+const textBox = document.querySelector(".text-box");
+textBox.style.visibility = "hidden";
 
 //event listener for choice buttons
 buttons.forEach(button => {
@@ -116,20 +119,38 @@ async function playRound(humanChoice) {
     }
     playerHistory.push(humanChoice);
     aiHistory.push(computerChoice);
-    // call getAIReason function to get AI's reasoning
-    getAIReason(playerHistory, aiHistory);
+    // call getAIReason function to get AI's reasoning, then put into text box
+    const aiAnswer = await getAIReason(playerHistory, aiHistory); // get ai response
+
+    let text = document.createElement("p"); // create text node
+    text.textContent = `AI: ${aiAnswer}`; // change text
+    text.style.display = "block"; // display as block
+    
+    textBox.appendChild(text); // append text node inside text box
+
+    // change previous messages to darker color
+    const previousText = text.previousElementSibling;
+    if(previousText) {
+        previousText.style.color = "rgb(165, 165, 165)";
+    }
+
+    textBox.scrollTop = textBox.scrollHeight; // auto scrolls to bottom of box when element is added
 }
 
 //plays game until player or computer reaches 5 points
 function playGame(){
+    // reset visibility
+    buttonsBox.style.visibility = "visible";
+    textBox.style.visibility = "visible";
+    // reset score 
     humanScore = 0;
     computerScore = 0;
     isPlaying = true;
-    //reset text for new round
+    // reset text for new round
     moves.textContent = "";
     result.textContent = "Pick your option!";
     score.textContent = "Score: 0 - 0";
-    //make text visible
+    // make text visible
     moves.style.visibility = "visible";
     result.style.visibility = "visible";
     score.style.visibility = "visible";
@@ -151,10 +172,9 @@ function printMoves(humanChoice, computerChoice){
 }
 
 function endGame(){
+    buttonsBox.style.visibility = "hidden";
     // stop game
     isPlaying = false;
-    // hide moves
-    moves.style.visibility = "hidden";
     // determine winner, and change results text
     if (humanScore > computerScore) {
         result.textContent = "🎉 You win! 🎉";
@@ -163,4 +183,5 @@ function endGame(){
     }
     playBtn.textContent = "Play Again!";
     playBtn.style.visibility = "visible";
+    playBtn.style.top = "82%";
 }
