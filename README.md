@@ -1,4 +1,4 @@
-# rock-paper-scissors-in-JS
+# Rock, Paper, Scissors vs. AI
 
-Simple rock paper scissors game made to learn JavaScript. Can play game on this repos GitHub Pages site.
-https://nathan8b.github.io/rock-paper-scissors-in-JS/
+Began as simple rock paper scissors game to learn JavaScript. Later on, I implemented an AI component using Gemini's API. 
+I also used this project to learn how to use Node.js, and set up an express server for the backend.
