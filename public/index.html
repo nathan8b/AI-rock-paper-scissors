@@ -7,13 +7,13 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Rock, Paper, Scissors</h1>
+    <h1>Rock, Paper, Scissors VS AI</h1>
     <h2>First to 5 Wins!</h2>
 
     <div class="game-box">
         <button class="play-btn">Play!</button>
 
-        <p class="result">Pick your option!</p>
+        <p class="result">Play 5 rounds of rock, paper, scissors against Google's Gemini, don't let it get in your head!</p>
         <p class="moves"></p>
         <p class="score">Score: 0 - 0</p>
 
@@ -23,8 +23,10 @@
             <button class="scissors">✂️</button>
         </div>
     </div>
-    
 
-    <script src="game.js"></script>
+    <div class="text-box"></div>
+    
+    <script type="module" src="api.js"></script>
+    <script type="module" src="game.js"></script>
 </body>
 </html>

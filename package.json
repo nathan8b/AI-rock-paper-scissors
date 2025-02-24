@@ -1,0 +1,28 @@
+{
+  "name": "rock-paper-scissors-in-js",
+  "version": "1.0.0",
+  "description": "Simple rock paper scissors game made to learn JavaScript. Can play game on this repos GitHub Pages site.\r https://nathan8b.github.io/rock-paper-scissors-in-JS/",
+  "main": "game.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nathan8b/rock-paper-scissors-in-JS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/nathan8b/rock-paper-scissors-in-JS/issues"
+  },
+  "homepage": "https://github.com/nathan8b/rock-paper-scissors-in-JS#readme",
+  "dependencies": {
+    "@google/generative-ai": "^0.22.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0"
+  }
+}
