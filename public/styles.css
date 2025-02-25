@@ -1,3 +1,4 @@
+/* main body element */
 body {
     background-color: rgb(33, 33, 33);
     color: rgb(235, 235, 235);
@@ -9,6 +10,7 @@ body {
     align-items: center;
 }
 
+/* headers at the top of page */
 h1, h2 {
     text-align: center;
 }
@@ -21,6 +23,7 @@ h2 {
     font-size: 15px;
 }
 
+/* main box where game and buttons are displayed */
 .game-box {
     background-color: rgb(56, 56, 56);
     height: 50vh;
@@ -36,12 +39,14 @@ h2 {
     position: relative;
 }
 
+/* div holding 3 move buttons */
 #buttons-box {
     display: flex;
     justify-content: space-between;
     gap: 2vw;
 }
 
+/* move button */
 #buttons-box button {
     background-color: rgb(34, 34, 34);
     border: 2px solid rgb(85, 85, 85);
@@ -58,6 +63,7 @@ h2 {
     align-items: center;
 }
 
+/* play game button */
 .play-btn {
     background-color: rgb(34, 34, 34);
     color: white;
@@ -71,12 +77,14 @@ h2 {
     border-radius: 50px;
 }
 
+/* text that displays who won the round, and the rules */
 .result {
     font-size: 22px;
     text-align: center;
     max-width: 400px;
 }
 
+/* displays the players moves for the round */
 .moves {
     margin: 0;
     height: 30vh;
@@ -86,6 +94,7 @@ h2 {
     font-size: clamp(10px, 15vw, 70px);
 }
 
+/* score display */
 .score {
     background-color: rgb(53, 53, 53);
     box-shadow: inset 0 0 18px 8px rgb(20, 20, 20);
@@ -95,6 +104,7 @@ h2 {
     border-radius: 10px;
 }
 
+/* div that AI responses get appended to */
 .text-box {
     background-color: rgb(53, 53, 53);
     box-shadow: inset 0 0 20px 10px rgb(33, 33, 33);
@@ -106,10 +116,11 @@ h2 {
     padding: 0px 20px;
     border-radius: 15px;
     overflow-y: auto;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* hide scroll bar for IE and Edge */
+    scrollbar-width: none; /* hide scroll bar for Firefox */
 }
 
+/* hide scroll bar for Chrome */
 .text-box::-webkit-scrollbar {
     display: none;
 }

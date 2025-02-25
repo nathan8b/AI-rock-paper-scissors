@@ -17,11 +17,8 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.post('/get-ai-move', async (req, res) => {
     const playerHistory = req.body.playerHistory;
     const aiHistory = req.body.aiHistory;
-    console.log("Received player history:", playerHistory);  // debugging
-    console.log('Received AI history:', aiHistory); //debugging
 
     const aiMove = await getAIMove(playerHistory, aiHistory);  // call the function
-    console.log("AI move:", aiMove);  // debugging
     res.json({ aiMove });  // send the AI's move as a response
 });
 
@@ -31,7 +28,6 @@ app.post('/get-ai-reason', async (req, res) => {
     const aiHistory = req.body.aiHistory;
 
     const aiReason = await getAIReason(playerHistory, aiHistory); // call the function
-    console.log("AI response:", aiReason); // debugging
     res.json({ aiReason }); // send AI reason as response
 })
 

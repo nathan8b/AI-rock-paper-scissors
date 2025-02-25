@@ -58,8 +58,6 @@ async function getAIMove(playerHistory, aiHistory) {
 async function getAIReason(playerHistory, aiHistory) {
     const playerMove = playerHistory[playerHistory.length - 1];
     const aiMove = aiHistory[aiHistory.length - 1];
-    console.log('player:', playerMove);
-    console.log('ai:', aiMove);
     // prompt for AI's reason
     const prompt = `You are playing rock paper scissors. You picked ${aiMove}, and your
                     opponent picked ${playerMove}. Based on the rules, determine
